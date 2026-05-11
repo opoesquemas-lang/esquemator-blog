@@ -1,0 +1,164 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedDate?: Date;
+  modifiedDate?: Date;
+  author?: string;
+  keywords?: string[];
+}
+
+const {
+  title,
+  description,
+  image = '/og-default.jpg',
+  type = 'website',
+  publishedDate,
+  modifiedDate,
+  author = 'Antonio Ferré',
+  keywords = [],
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const siteName = 'Esquemator Blog';
+const fullTitle = title.includes('Esquemator') ? title : `${title} | Esquemator`;
+const imageURL = new URL(image, Astro.site).toString();
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Primary Meta Tags -->
+  <title>{fullTitle}</title>
+  <meta name="title" content={fullTitle} />
+  <meta name="description" content={description} />
+  <meta name="author" content={author} />
+  {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content={type} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={imageURL} />
+  <meta property="og:site_name" content={siteName} />
+  <meta property="og:locale" content="es_ES" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content={canonicalURL} />
+  <meta property="twitter:title" content={fullTitle} />
+  <meta property="twitter:description" content={description} />
+  <meta property="twitter:image" content={imageURL} />
+
+  <!-- Article specific -->
+  {type === 'article' && publishedDate && (
+    <meta property="article:published_time" content={publishedDate.toISOString()} />
+  )}
+  {type === 'article' && modifiedDate && (
+    <meta property="article:modified_time" content={modifiedDate.toISOString()} />
+  )}
+  {type === 'article' && (
+    <meta property="article:author" content={author} />
+  )}
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="Esquemator Blog RSS" href="/rss.xml" />
+
+  <!-- Google Fonts: Inter + Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Theme color -->
+  <meta name="theme-color" content="#0F3D5C" />
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': type === 'article' ? 'BlogPosting' : 'WebSite',
+    headline: title,
+    description: description,
+    image: imageURL,
+    url: canonicalURL.toString(),
+    ...(type === 'article' && publishedDate && {
+      datePublished: publishedDate.toISOString(),
+      dateModified: (modifiedDate || publishedDate).toISOString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Esquemator',
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/logo.png', Astro.site).toString(),
+        },
+      },
+    }),
+  })} />
+
+  <slot name="head" />
+</head>
+<body>
+  <slot />
+  <style is:global>
+    :root {
+      --navy: #0F3D5C;
+      --navy-dark: #0A2338;
+      --navy-light: #1E5A85;
+      --cyan: #1FB7D8;
+      --cyan-light: #BFE6F0;
+      --cyan-bg: #E0F2F8;
+      --ink: #0F172A;
+      --slate-700: #334155;
+      --slate-500: #64748B;
+      --slate-400: #94A3B8;
+      --slate-300: #CBD5E1;
+      --slate-200: #E2E8F0;
+      --slate-100: #F1F5F9;
+      --slate-50: #F8FAFC;
+      --white: #FFFFFF;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      background: var(--white);
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Nunito', 'Inter', sans-serif;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      font-weight: 800;
+    }
+    a {
+      color: var(--cyan);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    a:hover { color: var(--navy); }
+    img { max-width: 100%; height: auto; display: block; }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .container-narrow {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+  </style>
+</body>
+</html>

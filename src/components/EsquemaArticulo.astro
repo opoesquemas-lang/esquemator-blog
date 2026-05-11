@@ -1,0 +1,229 @@
+---
+// ════════════════════════════════════════════════════════════════════
+//  EsquemaArticulo
+//  Mockup CSS de un artículo procesado por Esquemator.
+//
+//  Uso desde Markdown:
+//  <EsquemaArticulo
+//    articulo="99"
+//    ley="Constitución Española"
+//    tiempo="1.4 segundos"
+//    apartados={[
+//      "Después de cada renovación del [Congreso de los Diputados]...",
+//      "El candidato propuesto [expondrá] ante el Congreso..."
+//    ]}
+//  />
+//
+//  Sintaxis de pills en el texto:
+//    [palabra]        → pill cyan  (sustantivos/instituciones)
+//    {palabra}        → pill amber (verbos/acciones)
+//    !palabra!        → pill red   (importante/destacado: plazos, mayorías)
+//    @palabra@        → pill green (consecuencias/resultados)
+// ════════════════════════════════════════════════════════════════════
+
+export interface Props {
+  articulo: string;
+  ley: string;
+  tiempo?: string;
+  apartados: string[];
+}
+
+const { articulo, ley, tiempo = '1.2 segundos', apartados } = Astro.props;
+
+// Parser de pills: convierte [x] {x} !x! @x@ en spans coloreados
+function renderPills(text: string): string {
+  return text
+    // Escape HTML básico
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    // Pills (orden importa: primero los marcadores con caracteres especiales)
+    .replace(/\[([^\]]+)\]/g, '<span class="ea-pill ea-cyan">$1</span>')
+    .replace(/\{([^}]+)\}/g, '<span class="ea-pill ea-amber">$1</span>')
+    .replace(/!([^!]+)!/g, '<span class="ea-pill ea-red">$1</span>')
+    .replace(/@([^@]+)@/g, '<span class="ea-pill ea-green">$1</span>');
+}
+---
+<div class="ea-mockup">
+  <!-- Barra superior tipo navegador -->
+  <div class="ea-mockup-bar">
+    <div class="ea-mockup-dots">
+      <span class="ea-dot r"></span>
+      <span class="ea-dot y"></span>
+      <span class="ea-dot g"></span>
+    </div>
+    <div class="ea-mockup-url">app.esquemator.com · Editor</div>
+  </div>
+
+  <!-- Contenido del editor -->
+  <div class="ea-mockup-body">
+    <div class="ea-tag">
+      <span class="ea-tag-dot"></span>
+      Generado en {tiempo}
+    </div>
+
+    <div class="ea-head">
+      <span class="ea-label">Artículo</span>
+      <span class="ea-num">{articulo}</span>
+      <span class="ea-title">{ley}</span>
+    </div>
+
+    <ol class="ea-list">
+      {apartados.map((texto, i) => (
+        <li class="ea-item">
+          <span class="ea-bullet">{i + 1}</span>
+          <div class="ea-text" set:html={renderPills(texto)} />
+        </li>
+      ))}
+    </ol>
+  </div>
+</div>
+
+<style>
+  .ea-mockup {
+    max-width: 100%;
+    margin: 32px 0;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.10);
+    overflow: hidden;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  .ea-mockup-bar {
+    background: #F8FAFC;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ea-mockup-dots { display: flex; gap: 5px; }
+  .ea-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .ea-dot.r { background: #FF5F57; }
+  .ea-dot.y { background: #FEBC2E; }
+  .ea-dot.g { background: #28C840; }
+  .ea-mockup-url {
+    flex: 1;
+    text-align: center;
+    font-size: 11.5px;
+    color: #64748B;
+    font-weight: 500;
+  }
+
+  .ea-mockup-body {
+    padding: 22px 26px 26px;
+  }
+
+  .ea-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    color: #166534;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  .ea-tag-dot {
+    width: 5px;
+    height: 5px;
+    background: #16A34A;
+    border-radius: 50%;
+  }
+
+  .ea-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #F1F5F9;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .ea-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #64748B;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .ea-num {
+    font-family: 'Nunito', 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: #1FB7D8;
+    line-height: 1;
+  }
+  .ea-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0F172A;
+  }
+
+  .ea-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .ea-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #0F172A;
+  }
+  .ea-item:last-child { margin-bottom: 0; }
+
+  .ea-bullet {
+    flex-shrink: 0;
+    background: #E0F2F8;
+    color: #0F3D5C;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-weight: 800;
+    font-size: 11px;
+    margin-top: 1px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .ea-text {
+    flex: 1;
+  }
+
+  /* Pills coloreados (los renderiza renderPills) */
+  .ea-text :global(.ea-pill) {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 12.5px;
+    margin: 0 1px;
+    line-height: 1.4;
+  }
+  .ea-text :global(.ea-cyan)  { background: #E0F2F8; color: #0F3D5C; }
+  .ea-text :global(.ea-amber) { background: #FEF3C7; color: #92400E; font-weight: 700; }
+  .ea-text :global(.ea-red)   { background: #FEE2E2; color: #B91C1C; font-weight: 700; }
+  .ea-text :global(.ea-green) { background: #DCFCE7; color: #166534; font-weight: 700; }
+
+  @media (max-width: 600px) {
+    .ea-mockup-body { padding: 18px 18px 20px; }
+    .ea-num { font-size: 24px; }
+    .ea-title { font-size: 12px; }
+    .ea-item { font-size: 13px; }
+  }
+</style>

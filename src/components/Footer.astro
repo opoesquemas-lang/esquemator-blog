@@ -1,0 +1,140 @@
+---
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <div class="footer-logo">
+        esqu<span class="accent">=</span>mator
+      </div>
+      <p class="footer-tag">
+        Convierte cualquier artículo del BOE en un esquema visual en 2 segundos.
+      </p>
+      <a href="https://app.esquemator.com/login.html" class="footer-cta">
+        Probar gratis →
+      </a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Producto</h4>
+      <ul>
+        <li><a href="https://esquemator.com">Inicio</a></li>
+        <li><a href="https://esquemator.com#precios">Precios</a></li>
+        <li><a href="https://app.esquemator.com/login.html">Iniciar sesión</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Blog</h4>
+      <ul>
+        <li><a href="/blog/">Todos los posts</a></li>
+        <li><a href="/categoria/oposiciones/">Oposiciones</a></li>
+        <li><a href="/categoria/tecnicas-estudio/">Técnicas de estudio</a></li>
+        <li><a href="/rss.xml">RSS</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>OpoEsquemas</h4>
+      <ul>
+        <li><a href="https://opoesquemas.es">Academia online</a></li>
+        <li><a href="https://opoesquemas.es/temarios">Temarios</a></li>
+        <li><a href="https://opoesquemas.es/blog">Blog principal</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      <p>
+        © {year} Esquemator · Hecho con ❤️ para opositores
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: var(--slate-300);
+    margin-top: 80px;
+    padding-top: 60px;
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+  }
+  .footer-col h4 {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+    font-family: 'Inter', sans-serif;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .footer-col ul a {
+    color: var(--slate-400);
+    font-size: 14px;
+    transition: color 0.15s;
+  }
+  .footer-col ul a:hover {
+    color: var(--cyan);
+  }
+  .footer-logo {
+    font-family: 'Nunito', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 12px;
+  }
+  .footer-logo .accent { color: var(--cyan); }
+  .footer-tag {
+    font-size: 14px;
+    color: var(--slate-400);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    max-width: 320px;
+  }
+  .footer-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--cyan);
+    color: var(--ink);
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 700;
+    transition: all 0.15s;
+  }
+  .footer-cta:hover {
+    background: white;
+    color: var(--navy);
+    transform: translateY(-1px);
+  }
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 24px 0;
+    font-size: 13px;
+    color: var(--slate-500);
+    text-align: center;
+  }
+  @media (max-width: 768px) {
+    .footer-inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .footer-col:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

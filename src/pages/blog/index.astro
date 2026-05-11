@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PostCard from '../../components/PostCard.astro';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BaseLayout
+  title="Todos los artículos · Blog de Esquemator"
+  description="Todos los artículos del blog de Esquemator: técnicas de estudio, oposiciones, derecho, esquemas legales y más."
+>
+  <Header />
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Blog</span>
+        <h1>Todos los artículos</h1>
+        <p>{allPosts.length} artículos sobre opositar, estudiar mejor y aprovechar el BOE.</p>
+      </div>
+    </section>
+
+    <section class="posts-section">
+      <div class="container">
+        {allPosts.length > 0 ? (
+          <div class="posts-grid">
+            {allPosts.map(post => (
+              <PostCard
+                url={`/blog/${post.slug}/`}
+                title={post.data.title}
+                description={post.data.description}
+                date={post.data.date}
+                category={post.data.category}
+                image={post.data.image}
+              />
+            ))}
+          </div>
+        ) : (
+          <div class="empty">
+            <p>Aún no hay artículos publicados. ¡Vuelve pronto!</p>
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--slate-50);
+    padding: 60px 0 50px;
+    text-align: center;
+    border-bottom: 1px solid var(--slate-200);
+  }
+  .eyebrow {
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .page-hero h1 {
+    font-size: clamp(32px, 4vw, 44px);
+    color: var(--navy);
+    margin: 12px 0 10px;
+  }
+  .page-hero p {
+    color: var(--slate-500);
+    font-size: 16px;
+  }
+  .posts-section { padding: 50px 0; }
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .empty {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--slate-500);
+    font-size: 16px;
+  }
+</style>

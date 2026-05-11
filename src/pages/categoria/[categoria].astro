@@ -1,0 +1,161 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PostCard from '../../components/PostCard.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+  // Función para convertir categoría a slug URL
+  const toSlug = (str: string) => str
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '-');
+
+  // Agrupar posts por categoría
+  const categoriesMap = new Map<string, { name: string; posts: typeof posts }>();
+
+  posts.forEach(post => {
+    const slug = toSlug(post.data.category);
+    if (!categoriesMap.has(slug)) {
+      categoriesMap.set(slug, { name: post.data.category, posts: [] });
+    }
+    categoriesMap.get(slug)!.posts.push(post);
+  });
+
+  // Asegurar que existen las categorías "fijas" del navbar aunque estén vacías
+  const fixedCategories = [
+    { slug: 'oposiciones', name: 'Oposiciones' },
+    { slug: 'tecnicas-de-estudio', name: 'Técnicas de estudio' },
+    { slug: 'derecho-y-boe', name: 'Derecho y BOE' },
+    { slug: 'herramientas', name: 'Herramientas' },
+  ];
+  fixedCategories.forEach(({ slug, name }) => {
+    if (!categoriesMap.has(slug)) {
+      categoriesMap.set(slug, { name, posts: [] });
+    }
+  });
+
+  return Array.from(categoriesMap.entries()).map(([slug, { name, posts }]) => ({
+    params: { categoria: slug },
+    props: { categoryName: name, posts: posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()) },
+  }));
+}
+
+const { categoryName, posts } = Astro.props;
+---
+<BaseLayout
+  title={`${categoryName} · Blog de Esquemator`}
+  description={`Todos los artículos sobre ${categoryName.toLowerCase()} en el blog de Esquemator. Consejos prácticos para opositores.`}
+>
+  <Header />
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <a href="/blog/" class="back-link">← Volver al blog</a>
+        <span class="eyebrow">Categoría</span>
+        <h1>{categoryName}</h1>
+        <p>{posts.length} {posts.length === 1 ? 'artículo' : 'artículos'} sobre esta temática.</p>
+      </div>
+    </section>
+
+    <section class="posts-section">
+      <div class="container">
+        {posts.length > 0 ? (
+          <div class="posts-grid">
+            {posts.map(post => (
+              <PostCard
+                url={`/blog/${post.slug}/`}
+                title={post.data.title}
+                description={post.data.description}
+                date={post.data.date}
+                category={post.data.category}
+                image={post.data.image}
+              />
+            ))}
+          </div>
+        ) : (
+          <div class="empty">
+            <div class="empty-icon">📝</div>
+            <h2>Pronto habrá contenido aquí</h2>
+            <p>Estamos preparando los primeros artículos de esta categoría.</p>
+            <a href="/blog/" class="btn">Ver otros artículos →</a>
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--slate-50);
+    padding: 50px 0;
+    text-align: center;
+    border-bottom: 1px solid var(--slate-200);
+  }
+  .back-link {
+    display: inline-block;
+    color: var(--slate-500);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .back-link:hover { color: var(--cyan); }
+  .eyebrow {
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .page-hero h1 {
+    font-size: clamp(32px, 4vw, 44px);
+    color: var(--navy);
+    margin: 12px 0 10px;
+  }
+  .page-hero p {
+    color: var(--slate-500);
+    font-size: 16px;
+  }
+  .posts-section { padding: 50px 0; }
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .empty {
+    text-align: center;
+    padding: 60px 24px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .empty-icon { font-size: 56px; margin-bottom: 16px; }
+  .empty h2 {
+    color: var(--navy);
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  .empty p {
+    color: var(--slate-500);
+    margin-bottom: 24px;
+  }
+  .btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--navy), var(--cyan));
+    color: white;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    color: white;
+  }
+</style>

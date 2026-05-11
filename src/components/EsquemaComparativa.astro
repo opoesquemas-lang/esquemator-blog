@@ -1,0 +1,196 @@
+---
+// ════════════════════════════════════════════════════════════════════
+//  EsquemaComparativa
+//  Dos columnas lado a lado para mostrar ANTES/DESPUÉS.
+//
+//  Uso desde Markdown:
+//  <EsquemaComparativa
+//    leftTitle="Estudio tradicional"
+//    leftSubtitle="Lectura subrayada"
+//    leftItems={[
+//      "Subrayas el texto con colores",
+//      "Lees y relees pasivamente",
+//      "Pierdes la estructura jerárquica"
+//    ]}
+//    leftColor="red"
+//
+//    rightTitle="Con Esquemator"
+//    rightSubtitle="Esquema visual"
+//    rightItems={[
+//      "Estructura jerárquica clara",
+//      "Plazos y conceptos resaltados",
+//      "Memoria visual 6x más eficiente"
+//    ]}
+//    rightColor="green"
+//  />
+//
+//  Colores disponibles: 'red', 'green', 'navy', 'cyan', 'amber'
+// ════════════════════════════════════════════════════════════════════
+
+export interface Props {
+  leftTitle: string;
+  leftSubtitle?: string;
+  leftItems: string[];
+  leftColor?: 'red' | 'green' | 'navy' | 'cyan' | 'amber';
+
+  rightTitle: string;
+  rightSubtitle?: string;
+  rightItems: string[];
+  rightColor?: 'red' | 'green' | 'navy' | 'cyan' | 'amber';
+}
+
+const {
+  leftTitle, leftSubtitle, leftItems, leftColor = 'red',
+  rightTitle, rightSubtitle, rightItems, rightColor = 'green',
+} = Astro.props;
+---
+<div class="ec-comparativa">
+  <!-- COLUMNA IZQUIERDA -->
+  <div class={`ec-card ec-${leftColor}`}>
+    <div class="ec-tag">{leftTitle}</div>
+    {leftSubtitle && <h3 class="ec-subtitle">{leftSubtitle}</h3>}
+    <ul class="ec-list">
+      {leftItems.map(item => (
+        <li>
+          <span class="ec-icon">{leftColor === 'red' ? '✕' : '✓'}</span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- COLUMNA DERECHA -->
+  <div class={`ec-card ec-${rightColor}`}>
+    <div class="ec-tag">{rightTitle}</div>
+    {rightSubtitle && <h3 class="ec-subtitle">{rightSubtitle}</h3>}
+    <ul class="ec-list">
+      {rightItems.map(item => (
+        <li>
+          <span class="ec-icon">{rightColor === 'red' ? '✕' : '✓'}</span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<style>
+  .ec-comparativa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 32px 0;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  .ec-card {
+    border-radius: 14px;
+    padding: 24px 22px;
+    border: 1.5px solid;
+  }
+
+  /* Variantes de color */
+  .ec-card.ec-red {
+    background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
+    border-color: #FECACA;
+  }
+  .ec-card.ec-red .ec-tag {
+    background: #FEE2E2;
+    color: #B91C1C;
+  }
+
+  .ec-card.ec-green {
+    background: linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 100%);
+    border-color: #BBF7D0;
+  }
+  .ec-card.ec-green .ec-tag {
+    background: #DCFCE7;
+    color: #166534;
+  }
+
+  .ec-card.ec-navy {
+    background: linear-gradient(135deg, #0F3D5C 0%, #0F172A 100%);
+    border-color: #1E5A85;
+    color: white;
+  }
+  .ec-card.ec-navy .ec-tag {
+    background: rgba(255,255,255,0.15);
+    color: #BFE6F0;
+  }
+  .ec-card.ec-navy .ec-subtitle,
+  .ec-card.ec-navy li { color: white; }
+
+  .ec-card.ec-cyan {
+    background: linear-gradient(135deg, #E0F2F8 0%, #FFFFFF 100%);
+    border-color: #1FB7D8;
+  }
+  .ec-card.ec-cyan .ec-tag {
+    background: #1FB7D8;
+    color: white;
+  }
+
+  .ec-card.ec-amber {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FFFFFF 100%);
+    border-color: #FBBF24;
+  }
+  .ec-card.ec-amber .ec-tag {
+    background: #FBBF24;
+    color: #78350F;
+  }
+
+  .ec-tag {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+
+  .ec-subtitle {
+    font-family: 'Nunito', 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #0F3D5C;
+    margin: 0 0 14px 0;
+    letter-spacing: -0.01em;
+  }
+
+  .ec-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .ec-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #334155;
+  }
+
+  .ec-icon {
+    flex-shrink: 0;
+    font-weight: 800;
+    font-size: 14px;
+    margin-top: 2px;
+    width: 18px;
+    text-align: center;
+  }
+  .ec-red .ec-icon  { color: #DC2626; }
+  .ec-green .ec-icon { color: #16A34A; }
+  .ec-navy .ec-icon  { color: #1FB7D8; }
+  .ec-cyan .ec-icon  { color: #0F3D5C; }
+  .ec-amber .ec-icon { color: #B45309; }
+
+  @media (max-width: 640px) {
+    .ec-comparativa {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
+</style>

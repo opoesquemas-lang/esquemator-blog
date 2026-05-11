@@ -1,0 +1,230 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PostCard from '../components/PostCard.astro';
+
+// Obtener todos los posts no-draft y ordenarlos por fecha desc
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const featuredPost = allPosts.find(p => p.data.featured) || allPosts[0];
+const recentPosts = allPosts.filter(p => p.slug !== featuredPost?.slug).slice(0, 6);
+---
+<BaseLayout
+  title="Blog de Esquemator · Esquemas, oposiciones y estudio eficiente"
+  description="Consejos, técnicas y guías para opositores. Aprende a estudiar leyes de forma visual con esquemas claros y memorables."
+  keywords={['blog opositores', 'esquemas legales', 'técnicas de estudio', 'oposiciones', 'derecho administrativo', 'constitución española']}
+>
+  <Header />
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <span class="hero-eyebrow">Blog · Esquemator</span>
+          <h1>
+            Estudia leyes <span class="accent">más rápido</span><br>
+            y con menos esfuerzo
+          </h1>
+          <p>
+            Consejos, técnicas y guías prácticas para opositores.
+            Aprende a transformar el BOE en esquemas que <strong>de verdad se memorizan</strong>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED POST -->
+    {featuredPost && (
+      <section class="featured-section">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-eyebrow">⭐ Destacado</span>
+          </div>
+          <PostCard
+            url={`/blog/${featuredPost.slug}/`}
+            title={featuredPost.data.title}
+            description={featuredPost.data.description}
+            date={featuredPost.data.date}
+            category={featuredPost.data.category}
+            image={featuredPost.data.image}
+            featured={true}
+          />
+        </div>
+      </section>
+    )}
+
+    <!-- POSTS RECIENTES -->
+    {recentPosts.length > 0 && (
+      <section class="posts-section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Últimos artículos</h2>
+            <a href="/blog/" class="see-all">Ver todos →</a>
+          </div>
+          <div class="posts-grid">
+            {recentPosts.map(post => (
+              <PostCard
+                url={`/blog/${post.slug}/`}
+                title={post.data.title}
+                description={post.data.description}
+                date={post.data.date}
+                category={post.data.category}
+                image={post.data.image}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- CATEGORÍAS -->
+    <section class="categories-section">
+      <div class="container">
+        <div class="section-head center">
+          <h2>Explora por temática</h2>
+          <p>Encuentra el contenido que necesitas según tu situación.</p>
+        </div>
+        <div class="categories-grid">
+          <a href="/categoria/oposiciones/" class="cat-card">
+            <div class="cat-icon">📚</div>
+            <h3>Oposiciones</h3>
+            <p>Estrategias específicas por cuerpo: Auxiliar, Administrativo, Justicia, Hacienda...</p>
+          </a>
+          <a href="/categoria/tecnicas-estudio/" class="cat-card">
+            <div class="cat-icon">🧠</div>
+            <h3>Técnicas de estudio</h3>
+            <p>Memorización, mapas mentales, técnicas Pomodoro y todo lo que funciona de verdad.</p>
+          </a>
+          <a href="/categoria/derecho/" class="cat-card">
+            <div class="cat-icon">⚖️</div>
+            <h3>Derecho y BOE</h3>
+            <p>Explicaciones claras de leyes, conceptos jurídicos y novedades del BOE.</p>
+          </a>
+          <a href="/categoria/herramientas/" class="cat-card">
+            <div class="cat-icon">🛠️</div>
+            <h3>Herramientas</h3>
+            <p>Apps, recursos y métodos para optimizar tu preparación al máximo.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(180deg, var(--cyan-bg) 0%, white 100%);
+    padding: 80px 0 60px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 5.5vw, 56px);
+    line-height: 1.05;
+    margin-bottom: 20px;
+    color: var(--navy);
+  }
+  .hero h1 .accent { color: var(--cyan); }
+  .hero p {
+    font-size: clamp(16px, 2vw, 19px);
+    color: var(--slate-500);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .section-head.center {
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .section-head h2 {
+    font-size: 28px;
+    color: var(--navy);
+  }
+  .section-head.center p {
+    color: var(--slate-500);
+    margin-top: 8px;
+  }
+  .section-eyebrow {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan);
+    margin-bottom: 20px;
+  }
+  .see-all {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cyan);
+  }
+  .see-all:hover { color: var(--navy); }
+
+  .featured-section { padding: 60px 0 40px; }
+  .posts-section { padding: 40px 0; }
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .categories-section {
+    padding: 60px 0 40px;
+    background: var(--slate-50);
+    margin-top: 60px;
+  }
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+  }
+  .cat-card {
+    background: white;
+    border: 1px solid var(--slate-200);
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-align: left;
+    color: var(--ink);
+    transition: all 0.2s;
+  }
+  .cat-card:hover {
+    border-color: var(--cyan);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 40px rgba(15, 61, 92, 0.08);
+    color: var(--ink);
+  }
+  .cat-icon {
+    font-size: 36px;
+    margin-bottom: 14px;
+  }
+  .cat-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: var(--navy);
+  }
+  .cat-card p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--slate-500);
+  }
+</style>

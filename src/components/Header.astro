@@ -1,0 +1,101 @@
+---
+const currentPath = Astro.url.pathname;
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo">
+      <span class="logo-text">
+        esqu<span class="logo-accent">=</span>mator
+      </span>
+      <span class="logo-sub">Blog</span>
+    </a>
+
+    <nav class="nav">
+      <a href="/" class={currentPath === '/' ? 'active' : ''}>Inicio</a>
+      <a href="/blog/" class={currentPath.startsWith('/blog') ? 'active' : ''}>Todos los posts</a>
+      <a href="/categoria/oposiciones/" class={currentPath.includes('/oposiciones') ? 'active' : ''}>Oposiciones</a>
+      <a href="/categoria/tecnicas-estudio/" class={currentPath.includes('/tecnicas-estudio') ? 'active' : ''}>Técnicas</a>
+      <a href="https://esquemator.com" class="cta">Ir a Esquemator →</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: #fff;
+    border-bottom: 1px solid var(--slate-200);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.92);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    gap: 24px;
+  }
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    color: var(--navy);
+    font-family: 'Nunito', sans-serif;
+    flex-shrink: 0;
+  }
+  .logo-text {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .logo-accent {
+    color: var(--cyan);
+  }
+  .logo-sub {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--slate-500);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .nav a {
+    color: var(--slate-500);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: all 0.15s;
+  }
+  .nav a:hover {
+    color: var(--navy);
+    background: var(--slate-100);
+  }
+  .nav a.active {
+    color: var(--navy);
+    background: var(--cyan-bg);
+  }
+  .nav a.cta {
+    background: linear-gradient(135deg, var(--navy), var(--cyan));
+    color: white;
+    font-weight: 700;
+  }
+  .nav a.cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 61, 92, 0.2);
+  }
+  @media (max-width: 768px) {
+    .header-inner { padding: 12px 16px; gap: 12px; }
+    .nav { gap: 2px; }
+    .nav a { padding: 6px 10px; font-size: 13px; }
+    .nav a:not(.cta):not(.active) { display: none; }
+    .logo-sub { display: none; }
+  }
+</style>
