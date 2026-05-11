@@ -78,7 +78,14 @@ const imageURL = new URL(image, Astro.site).toString();
 
   <!-- Theme color -->
   <meta name="theme-color" content="#0F3D5C" />
-
+<!-- ════════════════ Google Analytics 4 ════════════════ -->
+   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6SZ4M73LS2"></script>
+   <script is:inline>
+     window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+     gtag('js', new Date());
+     gtag('config', 'G-6SZ4M73LS2');
+   </script>
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
