@@ -1,0 +1,74 @@
+---
+title: "Esquema del artículo 112 de la LPAC: Objeto y clases de los recursos"
+description: "Descarga gratis el esquema visual del artículo 112 de la Ley 39/2015 (LPAC) sobre el objeto y clases de los recursos administrativos. Incluye el texto íntegro del artículo y un vídeo explicativo paso a paso."
+date: 2026-05-15
+author: "Antonio Ferré"
+category: "Derecho y BOE"
+tags: ["lpac", "art-112", "derecho-administrativo", "recursos-administrativos", "esquema-descargable"]
+image: "/images/post-art-112-lpac.jpg"
+imageAlt: "Esquema visual del artículo 112 de la LPAC"
+draft: false
+featured: true
+---
+
+El artículo 112 de la **Ley 39/2015** del Procedimiento Administrativo Común (LPAC) es uno de los que más cae en oposiciones — y, a la vez, uno de los que peor se memoriza a la primera. Cuatro apartados densos, con conceptos que se cruzan entre sí: alzada, reposición potestativa, sustitución por procedimientos alternativos, reglamentos, reclamaciones económico-administrativas…
+
+En este post te dejo el **esquema visual completo** del artículo, en PDF descargable y gratis, más un vídeo corto donde explico cómo lo monté paso a paso con Esquemator.
+
+## Vídeo: cómo hacer este esquema en Esquemator
+
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin:24px 0;">
+  <iframe src="https://www.youtube.com/embed/-ZBiscV6mQc" title="Esquema del artículo 112 de la LPAC con Esquemator" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+</div>
+
+## Descarga el esquema en PDF
+
+<p style="margin:32px 0;">
+  <a href="/descargas/art-112-lpac-objeto-clases.pdf" download style="display:inline-flex;align-items:center;gap:8px;padding:14px 22px;background:#1FB7D8;color:#fff;text-decoration:none;border-radius:10px;font-weight:700;font-size:15px;">
+    📥 Descargar esquema en PDF (gratis)
+  </a>
+</p>
+
+> ¿Quieres uno igual para otro artículo o ley? Lo tienes en [esquemator.com](https://app.esquemator.com): pegas el texto y te genera el mapa visual en segundos. Sin registro para probarlo.
+
+## Texto del artículo 112 LPAC
+
+> **Artículo 112. Objeto y clases.**
+>
+> 1. Contra las resoluciones y los actos de trámite, si estos últimos deciden directa o indirectamente el fondo del asunto, determinan la imposibilidad de continuar el procedimiento, producen indefensión o perjuicio irreparable a derechos e intereses legítimos, podrán interponerse por los interesados los recursos de alzada y potestativo de reposición, que cabrá fundar en cualquiera de los motivos de nulidad o anulabilidad previstos en los artículos 47 y 48 de esta Ley.
+>
+> La oposición a los restantes actos de trámite podrá alegarse por los interesados para su consideración en la resolución que ponga fin al procedimiento.
+>
+> 2. Las leyes podrán sustituir el recurso de alzada, en supuestos o ámbitos sectoriales determinados, y cuando la especificidad de la materia así lo justifique, por otros procedimientos de impugnación, reclamación, conciliación, mediación y arbitraje, ante órganos colegiados o Comisiones específicas no sometidas a instrucciones jerárquicas, con respeto a los principios, garantías y plazos que la presente Ley reconoce a las personas y a los interesados en todo procedimiento administrativo.
+>
+> En las mismas condiciones, el recurso de reposición podrá ser sustituido por los procedimientos a que se refiere el párrafo anterior, respetando su carácter potestativo para el interesado.
+>
+> La aplicación de estos procedimientos en el ámbito de la Administración Local no podrá suponer el desconocimiento de las facultades resolutorias reconocidas a los órganos representativos electos establecidos por la Ley.
+>
+> 3. Contra las disposiciones administrativas de carácter general no cabrá recurso en vía administrativa.
+>
+> Los recursos contra un acto administrativo que se funden únicamente en la nulidad de alguna disposición administrativa de carácter general podrán interponerse directamente ante el órgano que dictó dicha disposición.
+>
+> 4. Las reclamaciones económico-administrativas se ajustarán a los procedimientos establecidos por su legislación específica.
+
+## Lo que te llevas del artículo en 4 ideas
+
+**1. Recursos contra actos: alzada y reposición potestativa.** Se interponen contra resoluciones y también contra actos de trámite "cualificados" — los que deciden el fondo, impiden continuar el procedimiento, producen indefensión o perjuicio irreparable. Para el resto de actos de trámite no hay recurso autónomo: la oposición se alega cuando llegue la resolución final.
+
+**2. Sustitución por otros procedimientos.** Las leyes sectoriales pueden cambiar la alzada (y, en sus mismas condiciones, la reposición) por otros mecanismos: impugnación, reclamación, conciliación, mediación o arbitraje. Tres requisitos clave que casi siempre caen en pregunta tipo test:
+
+- ante **órganos colegiados** o Comisiones específicas,
+- **no sometidos a instrucciones jerárquicas**,
+- respetando **principios, garantías y plazos** que reconoce la LPAC.
+
+**3. Contra reglamentos no cabe recurso administrativo.** Las disposiciones administrativas de carácter general no se recurren por vía administrativa. La salida es atacar el acto de aplicación fundándolo *únicamente* en la nulidad del reglamento, y entonces se puede interponer directamente ante el órgano que dictó esa disposición.
+
+**4. Reclamaciones económico-administrativas: legislación propia.** El apartado 4 es de remisión — no se rigen por la LPAC sino por su normativa específica (en esencia, la LGT y su reglamento de revisión).
+
+## El esquema, comentado
+
+El PDF que descargas tiene el artículo entero esquematizado por apartados, con colores diferenciados para cada uno. Cuando lo repases antes del examen, fíjate especialmente en el apartado 2: los **órganos colegiados** y la frase **"no sometidas a instrucciones jerárquicas"** son por donde suelen meter la pregunta-trampa.
+
+---
+
+**¿Quieres un esquema visual de cualquier otro artículo?** Pégalo en [esquemator.com](https://app.esquemator.com) y lo tienes en segundos. Gratis, sin registro para probarlo.
