@@ -11,8 +11,6 @@ draft: false
 featured: false
 ---
 
-import EsquemaArticulo from '../../components/EsquemaArticulo.astro';
-import EsquemaJerarquico from '../../components/EsquemaJerarquico.astro';
 import EsquemaEmbed from '../../components/EsquemaEmbed.astro';
 
 El artículo 103 de la **Constitución Española** es uno de los pilares de cualquier temario de oposición — y de los que más pregunta cae en CNP, Guardia Civil, AGE y cualquier proceso al funcionariado. Resume los **principios de actuación** de la Administración y abre la puerta al estatuto de los funcionarios públicos (acceso por mérito y capacidad, incompatibilidades, imparcialidad).
@@ -52,85 +50,6 @@ En este post te dejo el **esquema visual completo** del artículo, en PDF descar
 > 2. Los órganos de la Administración del Estado son creados, regidos y coordinados de acuerdo con la ley.
 >
 > 3. La ley regulará el estatuto de los funcionarios públicos, el acceso a la función pública de acuerdo con los principios de mérito y capacidad, las peculiaridades del ejercicio de su derecho a sindicación, el sistema de incompatibilidades y las garantías para la imparcialidad en el ejercicio de sus funciones.
-
-## El esquema visual
-
-<EsquemaJerarquico
-  titulo="103"
-  ley="Constitución Española"
-  tiempo="1.3 segundos"
-  arbol={[
-    {
-      tag: '1',
-      label: 'La [Administración Pública]',
-      tipo: 'principio',
-      hijos: [
-        { label: '{sirve} con !objetividad! los [intereses generales]', tipo: 'accion' },
-        {
-          label: 'y {actúa} de acuerdo con los principios de',
-          tipo: 'concepto',
-          hijos: [
-            { label: '!eficacia!', tipo: 'concepto' },
-            { label: '!jerarquía!', tipo: 'concepto' },
-            { label: '!descentralización!', tipo: 'concepto' },
-            { label: '!desconcentración!', tipo: 'concepto' },
-            { label: 'y !coordinación!', tipo: 'concepto' },
-          ],
-        },
-        {
-          label: 'con !sometimiento pleno!',
-          tipo: 'limite',
-          hijos: [
-            { label: 'a la [ley]', tipo: 'concepto' },
-            { label: 'y al [Derecho]', tipo: 'concepto' },
-          ],
-        },
-      ],
-    },
-    {
-      tag: '2',
-      label: 'Los [órganos de la Administración del Estado]',
-      tipo: 'principio',
-      hijos: [
-        {
-          label: 'son',
-          tipo: 'concepto',
-          hijos: [
-            { label: '{creados}', tipo: 'accion' },
-            { label: '{regidos}', tipo: 'accion' },
-            { label: 'y {coordinados}', tipo: 'accion' },
-          ],
-        },
-        { label: 'de acuerdo con la !ley!', tipo: 'limite' },
-      ],
-    },
-    {
-      tag: '3',
-      label: 'La [ley] regulará',
-      tipo: 'principio',
-      hijos: [
-        { label: 'el [estatuto de los funcionarios públicos]', tipo: 'concepto' },
-        {
-          label: 'el [acceso a la función pública]',
-          tipo: 'concepto',
-          hijos: [
-            {
-              label: 'de acuerdo con los principios de',
-              tipo: 'concepto',
-              hijos: [
-                { label: '!mérito!', tipo: 'limite' },
-                { label: 'y !capacidad!', tipo: 'limite' },
-              ],
-            },
-          ],
-        },
-        { label: 'las peculiaridades del ejercicio de su [derecho a sindicación]', tipo: 'concepto' },
-        { label: 'el [sistema de incompatibilidades]', tipo: 'concepto' },
-        { label: 'y las garantías para la @imparcialidad@ en el ejercicio de sus funciones', tipo: 'consecuencia' },
-      ],
-    },
-  ]}
-/>
 
 ## Lo que te llevas del artículo en 4 ideas
 
