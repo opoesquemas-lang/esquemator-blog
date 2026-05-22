@@ -75,7 +75,7 @@ const displayTitulo = titulo || esquema?.nombre || 'Esquema';
 ---
 
 {esquema ? (
-  <figure class="ee-mockup">
+  <figure class="ee-mockup" data-ee-token={token} data-ee-updated-at={esquema.updated_at || ''}>
     <div class="ee-bar">
       <div class="ee-dots">
         <span class="ee-dot r"></span>
@@ -106,6 +106,71 @@ const displayTitulo = titulo || esquema?.nombre || 'Esquema';
     <span class="ee-error-detail">{fetchError}</span>
   </aside>
 )}
+
+<script is:inline>
+  // ── Revalidación client-side ──────────────────────────────────────────
+  // Cada esquema embebido se construye estático en build (SEO). En el
+  // cliente, cuando el embed entra en viewport, comprobamos si el esquema
+  // tiene updated_at más reciente que el snapshot del build y, si lo está,
+  // reemplazamos el contenido in-place sin recargar la página ni gastar
+  // builds de Netlify.
+  (function () {
+    const SUPABASE_URL = 'https://jprhnlgxcbwsbtezadmf.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_mjer0PZ5du7RcFSvN4DArg_M4W_dGRE';
+    const RPC = SUPABASE_URL + '/rest/v1/rpc/get_public_schema';
+
+    function refresh(el) {
+      const token = el.getAttribute('data-ee-token');
+      const buildAt = el.getAttribute('data-ee-updated-at') || '';
+      if (!token) return;
+      fetch(RPC, {
+        method: 'POST',
+        headers: {
+          apikey: SUPABASE_KEY,
+          authorization: 'Bearer ' + SUPABASE_KEY,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({ p_token: token }),
+      })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          if (!Array.isArray(data) || !data.length) return;
+          const esq = data[0];
+          if (!esq || !esq.updated_at || !esq.html) return;
+          if (buildAt && new Date(esq.updated_at) <= new Date(buildAt)) return;
+          const content = el.querySelector('.ee-content');
+          if (!content) return;
+          content.innerHTML = esq.html;
+          el.setAttribute('data-ee-updated-at', esq.updated_at);
+        })
+        .catch(function () { /* silencioso: queda el contenido del build */ });
+    }
+
+    function init() {
+      const els = document.querySelectorAll('.ee-mockup[data-ee-token]');
+      if (!els.length) return;
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(function (entries, observer) {
+          entries.forEach(function (ent) {
+            if (ent.isIntersecting) {
+              refresh(ent.target);
+              observer.unobserve(ent.target);
+            }
+          });
+        }, { rootMargin: '200px' });
+        els.forEach(function (el) { io.observe(el); });
+      } else {
+        els.forEach(refresh);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
 
 <style>
   /* Wrapper estilo "navegador" (consistente con EsquemaJerarquico) */
