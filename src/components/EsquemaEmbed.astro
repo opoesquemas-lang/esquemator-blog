@@ -1,0 +1,247 @@
+---
+// ════════════════════════════════════════════════════════════════════
+//  EsquemaEmbed
+//  Embed de un esquema PÚBLICO de app.esquemator.com en el blog.
+//
+//  En BUILD time hace fetch al RPC `get_public_schema` (Supabase) y
+//  renderiza el HTML del esquema inline en la página. Resultado:
+//  Google indexa el contenido como propio del artículo (SEO completo,
+//  a diferencia de un iframe).
+//
+//  Uso desde MDX:
+//
+//    import EsquemaEmbed from '../../components/EsquemaEmbed.astro';
+//
+//    <EsquemaEmbed token="a8f7b3c2e1d40958721643" />
+//
+//  Para compartir un esquema y obtener el token: abre el esquema en
+//  app.esquemator.com → botón 🔗 Compartir → "Generar enlace público" →
+//  copia el token (el valor después de `?p=` en la URL).
+//
+//  Props opcionales:
+//    titulo  → override del título mostrado (default: nombre del esquema)
+//    fuente  → línea bajo el título (ej. "Constitución Española")
+// ════════════════════════════════════════════════════════════════════
+
+export interface Props {
+  token: string;
+  titulo?: string;
+  fuente?: string;
+}
+
+const { token, titulo, fuente } = Astro.props;
+
+const SUPABASE_URL = 'https://jprhnlgxcbwsbtezadmf.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_mjer0PZ5du7RcFSvN4DArg_M4W_dGRE';
+
+interface EsquemaPublico {
+  id: string;
+  nombre: string;
+  html: string;
+  shared_at: string | null;
+  updated_at: string | null;
+}
+
+let esquema: EsquemaPublico | null = null;
+let fetchError: string | null = null;
+
+if (token && token.length >= 16) {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_public_schema`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_KEY,
+        authorization: `Bearer ${SUPABASE_KEY}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ p_token: token }),
+    });
+    if (!res.ok) {
+      fetchError = `HTTP ${res.status}: ${await res.text()}`;
+    } else {
+      const data = await res.json();
+      esquema = Array.isArray(data) && data.length ? data[0] : null;
+      if (!esquema) fetchError = 'Esquema no encontrado o link revocado.';
+    }
+  } catch (e) {
+    fetchError = e instanceof Error ? e.message : String(e);
+  }
+} else {
+  fetchError = 'Token inválido o vacío.';
+}
+
+const shareUrl = `https://app.esquemator.com/share.html?p=${encodeURIComponent(token)}`;
+const displayTitulo = titulo || esquema?.nombre || 'Esquema';
+---
+
+{esquema ? (
+  <figure class="ee-mockup">
+    <div class="ee-bar">
+      <div class="ee-dots">
+        <span class="ee-dot r"></span>
+        <span class="ee-dot y"></span>
+        <span class="ee-dot g"></span>
+      </div>
+      <div class="ee-url">app.esquemator.com · Esquema</div>
+    </div>
+    <div class="ee-body">
+      <header class="ee-head">
+        <h3 class="ee-title">{displayTitulo}</h3>
+        {fuente && <div class="ee-fuente">{fuente}</div>}
+      </header>
+      <div class="ee-content" set:html={esquema.html}></div>
+      <footer class="ee-foot">
+        <a href={shareUrl} target="_blank" rel="noopener" class="ee-cta">
+          Abrir en Esquemator →
+        </a>
+        <span class="ee-credit">
+          Generado con <a href="https://app.esquemator.com" target="_blank" rel="noopener">Esquemator</a>
+        </span>
+      </footer>
+    </div>
+  </figure>
+) : (
+  <aside class="ee-error" role="alert">
+    <strong>No se pudo cargar el esquema.</strong>
+    <span class="ee-error-detail">{fetchError}</span>
+  </aside>
+)}
+
+<style>
+  /* Wrapper estilo "navegador" (consistente con EsquemaJerarquico) */
+  .ee-mockup {
+    max-width: 100%;
+    margin: 32px 0;
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.10);
+    overflow: hidden;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  .ee-bar {
+    background: #F8FAFC;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ee-dots { display: flex; gap: 5px; }
+  .ee-dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .ee-dot.r { background: #FF5F57; }
+  .ee-dot.y { background: #FEBC2E; }
+  .ee-dot.g { background: #28C840; }
+  .ee-url {
+    flex: 1; text-align: center;
+    font-size: 11.5px; color: #64748B; font-weight: 500;
+  }
+
+  .ee-body { padding: 22px 26px 18px; }
+
+  .ee-head {
+    padding-bottom: 14px;
+    border-bottom: 1px solid #F1F5F9;
+    margin-bottom: 18px;
+  }
+  .ee-title {
+    font-family: 'Nunito', 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #0F3D5C;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .ee-fuente {
+    font-size: 12.5px;
+    color: #64748B;
+    font-weight: 500;
+  }
+
+  .ee-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid #F1F5F9;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .ee-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 12.5px;
+    transition: transform .15s;
+  }
+  .ee-cta:hover { transform: translateY(-1px); }
+  .ee-credit { font-size: 11px; color: #94A3B8; }
+  .ee-credit a { color: #4F46E5; text-decoration: none; font-weight: 600; }
+  .ee-credit a:hover { text-decoration: underline; }
+
+  /* ── Estilos copiados del editor (#panel-esquema → .ee-content) ─────
+     El HTML guardado por la app usa estos selectores. Si los estilos
+     del editor cambian en index.html de la app, hay que reflejarlo aquí
+     para que el esquema renderice fiel en el blog. */
+  .ee-content :global(.tarjeta) {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .ee-content :global(.t-title-label) { font-weight: 700; color: #4F46E5; font-size: 13px; }
+  .ee-content :global(.t-title-num) { font-weight: 800; color: #0F172A; font-size: 17px; margin-left: 4px; }
+  .ee-content :global(.t-title-rest) { font-weight: 600; color: #0F172A; font-size: 15px; margin-left: 6px; }
+  .ee-content :global(ul) { padding-left: 22px; margin: 8px 0; }
+  .ee-content :global(li) { margin: 6px 0; line-height: 1.55; }
+  .ee-content :global(.banner-sec) {
+    background: #EEF2FF;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #4F46E5;
+    margin: 12px 0 8px;
+  }
+  /* Ocultar botones y elementos interactivos (es read-only) */
+  .ee-content :global(.coll-btn),
+  .ee-content :global(button) { display: none; }
+  .ee-content :global([contenteditable]) { outline: none; }
+
+  /* Error state */
+  .ee-error {
+    margin: 32px 0;
+    padding: 16px 20px;
+    background: #FEF3C7;
+    border: 1px solid #FBBF24;
+    border-radius: 10px;
+    color: #78350F;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .ee-error strong { display: block; margin-bottom: 4px; color: #92400E; }
+  .ee-error-detail {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    color: #92400E;
+    opacity: 0.7;
+    word-break: break-word;
+  }
+
+  @media (max-width: 640px) {
+    .ee-body { padding: 18px 16px 14px; }
+    .ee-title { font-size: 18px; }
+    .ee-foot { gap: 8px; }
+    .ee-cta { font-size: 12px; padding: 7px 12px; }
+  }
+</style>
