@@ -5,11 +5,10 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# Redirects: catch-all 404
-[[redirects]]
-  from = "/*"
-  to = "/404"
-  status = 404
+# (Sin catch-all manual: con output hybrid el adaptador de Netlify enruta las
+#  rutas SSR (/infografia/*, /sitemap-infografias.xml) a su función. Un
+#  redirect /* → /404 en netlify.toml las tragaría. Astro sirve su 404.html
+#  para lo no encontrado.)
 
 # Headers de seguridad y performance
 [[headers]]

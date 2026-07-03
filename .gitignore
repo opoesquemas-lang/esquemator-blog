@@ -30,3 +30,6 @@ pnpm-debug.log*
 
 # La app SaaS vive en su propio repo (opoesquemas-lang/esquemator-app)
 esquemator-app/
+
+# Netlify adapter build output
+.netlify/
