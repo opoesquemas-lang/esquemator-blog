@@ -13,6 +13,7 @@ const currentPath = Astro.url.pathname;
     <nav class="nav">
       <a href="/" class={currentPath === '/' ? 'active' : ''}>Inicio</a>
       <a href="/blog/" class={currentPath.startsWith('/blog') ? 'active' : ''}>Todos los posts</a>
+      <a href="/infografias/" class={currentPath.startsWith('/infografia') ? 'active' : ''}>Infografías</a>
       <a href="/categoria/oposiciones/" class={currentPath.includes('/oposiciones') ? 'active' : ''}>Oposiciones</a>
       <a href="/categoria/tecnicas-estudio/" class={currentPath.includes('/tecnicas-estudio') ? 'active' : ''}>Técnicas</a>
       <a href="https://esquemator.com" class="cta">Ir a Esquemator →</a>

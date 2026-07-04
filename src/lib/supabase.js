@@ -37,3 +37,18 @@ export async function getPublicaciones() {
     return [];
   }
 }
+
+// Devuelve las publicaciones con los campos para el índice/tarjetas.
+export async function getPublicacionesLista() {
+  const url = `${SUPABASE_URL}/rest/v1/publicaciones`
+    + `?publicado=eq.true&select=slug,titulo,descripcion,categoria,imagen_url,created_at`
+    + `&order=created_at.desc`;
+  try {
+    const res = await fetch(url, { headers: HEADERS });
+    if (!res.ok) return [];
+    const rows = await res.json();
+    return Array.isArray(rows) ? rows : [];
+  } catch (e) {
+    return [];
+  }
+}
