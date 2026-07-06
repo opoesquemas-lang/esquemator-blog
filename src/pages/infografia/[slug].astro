@@ -42,6 +42,14 @@ const parrafos = (pub.texto || '')
         <img src={pub.imagen_url} alt={pub.titulo} loading="eager" />
       </figure>
 
+      <div class="editar-cta">
+        <div>
+          <strong>¿La quieres para ti?</strong>
+          <span>Ábrela en Esquemator, edítala a tu gusto y descárgala en PDF. Gratis.</span>
+        </div>
+        <a href={`https://app.esquemator.com/?infografia=${pub.slug}`} class="btn">✏️ Editar y descargar</a>
+      </div>
+
       {parrafos.length > 0 && (
         <div class="texto">
           {parrafos.map((p) => <p>{p}</p>)}
@@ -72,4 +80,17 @@ const parrafos = (pub.texto || '')
   .infografia img { display: block; width: 100%; height: auto; }
   .texto { font-size: 16px; line-height: 1.75; color: var(--slate-700); }
   .texto p { margin: 0 0 16px; }
+  .editar-cta {
+    display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+    background: linear-gradient(135deg, var(--cyan-bg), #fff);
+    border: 1px solid var(--cyan-light); border-radius: 14px; padding: 18px 22px; margin: 0 0 32px;
+  }
+  .editar-cta strong { display: block; font-size: 16px; color: var(--navy); font-family: 'Nunito', sans-serif; }
+  .editar-cta span { display: block; font-size: 14px; color: var(--slate-500); margin-top: 3px; }
+  .editar-cta .btn {
+    flex-shrink: 0; background: linear-gradient(135deg, var(--navy), var(--cyan)); color: #fff;
+    font-weight: 800; font-size: 15px; padding: 12px 22px; border-radius: 10px; text-decoration: none;
+    white-space: nowrap;
+  }
+  .editar-cta .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(15, 61, 92, 0.22); }
 </style>
